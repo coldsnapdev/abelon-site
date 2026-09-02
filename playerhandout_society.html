@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life in Westmere</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap');
+  :root{--parchment:#f2e8d5;--parchment-mid:#ecdfc8;--parchment-dark:#e0d0b0;--ink:#1a1410;--ink-mid:#4a3828;--ink-faded:#7a6a55;--accent:#6b3a2a;--rule:#c4a882;--rule-faint:rgba(196,168,130,0.35);--teal-bg:rgba(15,110,86,0.07);--teal-border:#0F6E56;--blue-bg:rgba(24,95,165,0.07);--blue-border:#185FA5;--pink-bg:rgba(153,53,86,0.07);--pink-border:#993556;--gold-bg:rgba(133,79,11,0.07);--gold-border:#854F0B;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--parchment);color:var(--ink);font-family:'Crimson Pro',Georgia,serif;font-size:11pt;line-height:1.6;}
+  .page{max-width:210mm;margin:0 auto;padding:16mm 18mm;transition:max-width .2s;}
+  @media print{@page{size:A4;margin:16mm 18mm;}body{background:white;}.page{max-width:none;margin:0;padding:0;}.page-break{break-before:page;}}
+  .doc-header{text-align:center;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:14px;}
+  .doc-label{font-family:'Cinzel',serif;font-size:0.68em;letter-spacing:.35em;text-transform:uppercase;color:var(--ink-faded);display:block;margin-bottom:5px;}
+  .doc-title{font-family:'Cinzel',serif;font-size:2em;font-weight:600;color:var(--accent);letter-spacing:.05em;line-height:1.1;margin-bottom:4px;}
+  .doc-subtitle{font-size:0.91em;font-style:italic;color:var(--ink-faded);}
+  .section-heading{font-family:'Cinzel',serif;font-size:0.68em;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);border-bottom:.5px solid var(--rule-faint);padding-bottom:4px;margin-bottom:8px;margin-top:16px;}
+  .section-heading:first-of-type{margin-top:0;}
+  .body-text{font-size:0.91em;color:var(--ink-mid);line-height:1.6;margin-bottom:8px;}
+  .body-text:last-of-type{margin-bottom:0;}
+  .intro-note{font-size:0.91em;font-style:italic;color:var(--ink-mid);margin-bottom:10px;line-height:1.5;}
+  .card{border-radius:5px;overflow:hidden;border:.5px solid var(--rule);margin-bottom:7px;break-inside:avoid;}
+  .card.teal{border-color:var(--teal-border);}
+  .card.blue{border-color:var(--blue-border);}
+  .card.pink{border-color:var(--pink-border);}
+  .card.gold{border-color:var(--gold-border);}
+  .card-label{font-family:'Cinzel',serif;font-size:0.64em;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faded);padding:4px 10px;border-bottom:.5px solid var(--rule-faint);background:var(--parchment-dark);}
+  .card.teal .card-label{background:var(--teal-bg);color:var(--teal-border);}
+  .card.blue .card-label{background:var(--blue-bg);color:var(--blue-border);}
+  .card.pink .card-label{background:var(--pink-bg);color:var(--pink-border);}
+  .card.gold .card-label{background:var(--gold-bg);color:var(--gold-border);}
+  .card-body{padding:9px 10px;font-size:0.88em;color:var(--ink-mid);line-height:1.55;}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;}
+  .doc-footer{margin-top:14px;padding-top:8px;border-top:.5px solid var(--rule-faint);font-size:0.77em;font-style:italic;color:var(--ink-faded);text-align:center;}
+  .page2-header{text-align:center;border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:14px;}
+  .page2-title{font-family:'Cinzel',serif;font-size:1.45em;font-weight:600;color:var(--accent);letter-spacing:.05em;}
+  .rule-faint-line{border:none;border-top:.5px solid var(--rule-faint);margin:12px 0;}
+  .slider-bar{position:fixed;bottom:20px;right:20px;background:var(--parchment-dark);border:.5px solid var(--rule);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:10px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+  .slider-bar label{font-family:'Cinzel',serif;font-size:0.82em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faded);white-space:nowrap;}
+  .slider-bar input{width:90px;accent-color:var(--accent);}
+  .slider-bar span{font-family:'Cinzel',serif;font-size:0.82em;color:var(--ink-faded);min-width:28px;text-align:right;}
+  .audio-bar{display:flex;align-items:center;gap:12px;background:var(--parchment-dark);border:.5px solid var(--rule);border-radius:6px;padding:10px 14px;margin-bottom:14px;}
+  .audio-bar audio{flex:1;height:32px;accent-color:var(--accent);}
+  .audio-label{font-family:'Cinzel',serif;font-size:0.6em;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faded);white-space:nowrap;}
+  @media print{.audio-bar{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-label">Player Reference &middot; Abelon: The Weight of the World</span>
+    <div class="doc-title">Life in Westmere</div>
+    <div class="doc-subtitle">A primer on society, power, and daily life in the Western Reach</div>
+  </div>
+
+  <div class="audio-bar">
+    <span class="audio-label">Narration</span>
+    <audio controls>
+      <source src="SocietyVO.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <div class="section-heading">Power and Governance</div>
+  <p class="body-text">Westmere is not governed so much as managed. Power sits with those who own land and those the community has chosen to trust with hard decisions. Almost every settlement has someone who fills this role: a magistrate, a mayor, a sheriff, an ombudsman. The title varies. The function is the same: to arbitrate disputes, uphold property rights, and keep the peace. There is no higher authority looking over their shoulder.</p>
+  <p class="body-text">There is a ruling class. They are wealthy beyond measure, rarely seen, and broadly tolerated. They own a great deal, maintain that ownership through financial leverage and long memory, and are wise enough not to push too hard. When they pass through a town they draw stares: the silks, the horses, the carriages. Then they leave and life continues as it was. Most people find them more curious than threatening.</p>
+
+  <div class="section-heading">Law and Justice</div>
+  <p class="body-text">Almost every crime in Westmere is a crime against property or against a person's body and wellbeing. Justice is practical: the wrongdoer makes the wronged party whole, in coin or in work. Fines are common. Short imprisonment while things are sorted is common. What is rare is anything more severe than that.</p>
+  <p class="body-text">For those who cannot or will not make amends, exile is the answer: into wilderness, onto the road, away from the community that no longer trusts them. Capital punishment exists in some places. It is vanishingly uncommon, logistically awkward, and nobody much wants the job.</p>
+  <p class="body-text">There are no standing police forces except in the wealthiest southern cities, where they exist to protect the wealthy. Elsewhere, order is a community effort. What that looks like varies enormously from place to place.</p>
+
+  <div class="section-heading">Economy and Work</div>
+  <p class="body-text">The world has everything it needs to thrive. Coin exists, banks exist, learned professions exist. Most people have enough to get by. Getting by requires effort, and most people make it without complaint because that has always been the way of things.</p>
+  <p class="body-text">Trade happens in coin and in kind, often in the same transaction. Infrastructure, roads, bridges, harbours, is maintained by whoever benefits from it. A merchant guild whose goods are delayed by a broken bridge fixes the bridge. Pragmatism, not generosity.</p>
+  <p class="body-text">Wealth is concentrated in the south, in Sunmere Island and the Sunfall Coast. The Western Reach gets by on considerably less. Most people find that sufficient.</p>
+
+  <div class="section-heading">Community and Daily Life</div>
+  <p class="body-text">Most people live near where they work and have done so all their lives. Their friends are neighbours. Their family is close by. Communities are small, numerous, and varied: some built around a trade, some around a species, some around a shared belief, some simply around whoever happened to settle in the same valley a few generations ago.</p>
+  <p class="body-text">People can leave and sometimes do, for work, for curiosity, for independence. There are no barriers. It is simply that most people have more reasons to stay than to go.</p>
+  <p class="body-text">When the work is done, people enjoy themselves together. Festivals mark the seasons: Halfbright at the spring equinox, Nighthold at the winter solstice, Halfnight in the autumn. Between them there is music, dancing, theatre, sport, the ordinary pleasures of people who have earned the evening.</p>
+
+  <div class="section-heading">Religion</div>
+  <p class="body-text">There is no organised church, no continental doctrine, no hierarchy of priests. People worship how and where they choose: at a shrine if one exists nearby, at the dinner table, at the threshold before leaving the house. A few words said in the right direction, an offering left on the right shelf. That is enough.</p>
+  <p class="body-text">Communities that have organised around particular beliefs will have shrines, temples, gathering spaces. In such places a religious figure might hold civic authority too, if the community decided that made sense. What works, stays. What does not, does not.</p>
+
+  <div class="section-heading">A Note on Variety</div>
+  <p class="body-text">Nothing described here is universal. What is true in one town may not be true in the next. Westmere is not a system but an accumulation of things that worked somewhere and were kept. The Western Reach has its own texture, and the places within it each have theirs. Expect to find the familiar and the unfamiliar sitting side by side, with rarely a clear reason why.</p>
+
+  <div class="doc-footer">Abelon &ndash; The Weight of the World</div>
+</div>
+
+<div class="slider-bar">
+  <label>Text size</label>
+  <input type="range" min="8" max="20" value="11" step="0.5" id="font-slider" oninput="updateSize(this.value)">
+  <span id="size-val">11pt</span>
+</div>
+
+<script>
+function updateSize(val) {
+  document.body.style.fontSize = val + 'pt';
+  document.getElementById('size-val').textContent = val + 'pt';
+  const base = 11;
+  const maxW = Math.round(210 * (val / base));
+  document.querySelectorAll('.page').forEach(p => p.style.maxWidth = maxW + 'mm');
+}
+</script>
+
+</body>
+</html>

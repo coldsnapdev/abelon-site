@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Abelon Almanac</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brass-light: #e8c87a;
+  --brass-mid:   #c9a040;
+  --brass-dark:  #8a6820;
+  --brass-deep:  #4a3810;
+  --copper:      #b87333;
+  --verdigris:   #4a7c6f;
+  --frost:       #7a94a3;
+  --iron:        #3a3530;
+  --iron-light:  #5a5248;
+  --parchment:   #f0e4c0;
+  --parchment-dim: #cbbd94;
+  --ink:         #1a1208;
+  --festival-glow: rgba(232,200,122,0.55);
+  --spring: #6f9c7a;
+  --autumn: #c98a4b;
+  --winter: #7a94a3;
+}
+
+html, body { overflow-x: hidden; }
+
+body {
+  background: #0e0c08;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: 'Crimson Pro', serif;
+  padding: 32px 16px;
+  background-image: radial-gradient(ellipse at 50% 30%, rgba(90,60,10,0.3) 0%, transparent 70%);
+}
+
+.device { width: 620px; max-width: 100%; }
+
+.housing {
+  background: linear-gradient(145deg, #7a5c1a 0%, #4a3810 30%, #2a1f08 60%, #3a2c10 100%);
+  border-radius: 14px;
+  padding: 3px;
+  box-shadow:
+    0 0 0 1px #c9a040,
+    0 0 0 3px #4a3810,
+    0 0 0 4px #8a6820,
+    0 8px 40px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(232,200,122,0.3);
+  position: relative;
+}
+
+.housing::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 11px;
+  border: 1px solid rgba(200,160,64,0.2);
+  pointer-events: none;
+}
+
+.inner {
+  background: linear-gradient(160deg, #1e1808 0%, #120e04 50%, #1a1408 100%);
+  border-radius: 11px;
+  padding: 26px 30px 30px;
+  position: relative;
+}
+
+/* Title plate */
+.title-plate { text-align: center; margin-bottom: 20px; position: relative; }
+.title-plate::before, .title-plate::after {
+  content: ''; position: absolute; top: 50%; width: 22%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-mid), transparent);
+}
+.title-plate::before { left: 0; }
+.title-plate::after { right: 0; }
+.device-name {
+  font-family: 'Cinzel', serif; font-size: 21px; font-weight: 700;
+  color: var(--brass-light); letter-spacing: 0.16em;
+  text-shadow: 0 0 20px rgba(232,200,122,0.4); display: block;
+}
+.device-sub {
+  font-family: 'Crimson Pro', serif; font-style: italic; font-size: 12px;
+  color: var(--parchment-dim); opacity: 0.75; margin-top: 4px; letter-spacing: 0.03em;
+}
+
+/* Dial */
+.dial-wrap { display: flex; justify-content: center; margin: 6px 0 18px; }
+#dial { width: 100%; max-width: 320px; height: auto; }
+.dial-month-label {
+  font-family: 'Cinzel', serif; font-size: 8.5px; fill: var(--parchment-dim);
+  letter-spacing: 0.05em;
+}
+.dial-season-arc { opacity: 0.16; }
+.dial-tick { stroke: rgba(240,228,192,0.35); }
+.dial-tick-major { stroke: var(--brass-mid); stroke-width: 1.4; }
+.dial-hand { stroke: var(--brass-light); filter: drop-shadow(0 0 4px rgba(232,200,122,0.7)); }
+.dial-hub { fill: var(--brass-mid); stroke: var(--brass-deep); stroke-width: 1; }
+.dial-festival {
+  fill: var(--festival-glow); filter: drop-shadow(0 0 3px rgba(232,200,122,0.8));
+}
+.dial-rim { fill: none; stroke: var(--brass-dark); stroke-width: 2; }
+.dial-face { fill: #1a1408; }
+
+/* Date plate */
+.date-plate { text-align: center; margin-bottom: 6px; }
+.date-main {
+  font-family: 'Cinzel', serif; font-size: 30px; font-weight: 600;
+  color: var(--parchment); letter-spacing: 0.04em;
+}
+.date-sub {
+  font-family: 'Crimson Pro', serif; font-style: italic; font-size: 13px;
+  color: var(--parchment-dim); margin-top: 4px; opacity: 0.85;
+}
+.date-sub .season-tag { text-transform: uppercase; letter-spacing: 0.08em; font-style: normal; font-size: 11px; }
+.season-spring { color: var(--spring); }
+.season-autumn { color: var(--autumn); }
+.season-winter { color: var(--winter); }
+
+.festival-note {
+  text-align: center; font-family: 'Crimson Pro', serif; font-style: italic;
+  font-size: 11.5px; color: rgba(232,200,122,0.55); margin-top: 8px; letter-spacing: 0.02em;
+}
+
+/* Divider */
+.divider {
+  height: 1px; margin: 22px 0; background: linear-gradient(90deg, transparent, rgba(200,160,64,0.35), transparent);
+}
+
+/* Campaign log */
+.log-title {
+  font-family: 'Cinzel', serif; font-size: 12px; color: var(--brass-mid);
+  letter-spacing: 0.14em; text-align: center; margin-bottom: 12px;
+}
+.log-list { max-height: 220px; overflow-y: auto; padding-right: 4px; }
+.log-list::-webkit-scrollbar { width: 6px; }
+.log-list::-webkit-scrollbar-thumb { background: var(--brass-dark); border-radius: 3px; }
+.log-entry {
+  display: flex; gap: 12px; padding: 9px 10px; border-radius: 6px;
+  background: rgba(232,200,122,0.04); border: 1px solid rgba(200,160,64,0.12);
+  margin-bottom: 7px; align-items: baseline;
+}
+.log-date {
+  font-family: 'Cinzel', serif; font-size: 10.5px; color: var(--brass-mid);
+  white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; min-width: 60px;
+}
+.log-text { font-size: 13.5px; color: var(--parchment-dim); line-height: 1.4; flex: 1; }
+.log-empty { text-align: center; font-style: italic; font-size: 12.5px; color: var(--parchment-dim); opacity: 0.5; padding: 10px; }
+.log-del {
+  background: none; border: none; color: rgba(200,120,90,0.6); cursor: pointer;
+  font-size: 15px; line-height: 1; padding: 0 2px; flex-shrink: 0;
+}
+.log-del:hover { color: #d97757; }
+
+/* DM lock strip */
+.dm-strip { text-align: center; margin-top: 20px; }
+.dm-toggle-btn {
+  background: none; border: 1px solid rgba(200,160,64,0.3); color: var(--parchment-dim);
+  font-family: 'Crimson Pro', serif; font-size: 11px; letter-spacing: 0.05em;
+  padding: 6px 14px; border-radius: 20px; cursor: pointer; opacity: 0.6;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+.dm-toggle-btn:hover { opacity: 1; border-color: var(--brass-mid); }
+.dm-toggle-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
+
+/* DM panel */
+.dm-panel {
+  margin-top: 18px; padding: 18px; border-radius: 8px;
+  background: rgba(0,0,0,0.25); border: 1px solid rgba(200,160,64,0.25);
+  display: none;
+}
+.dm-panel.unlocked { display: block; }
+.dm-panel-title {
+  font-family: 'Cinzel', serif; font-size: 11px; color: var(--brass-mid);
+  letter-spacing: 0.12em; margin-bottom: 14px; text-align: center; text-transform: uppercase;
+}
+.dm-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+.dm-row label { font-size: 11.5px; color: var(--parchment-dim); min-width: 50px; }
+.dm-btn {
+  background: linear-gradient(160deg, var(--brass-mid), var(--brass-dark));
+  color: var(--ink); border: none; border-radius: 5px; padding: 7px 13px;
+  font-family: 'Crimson Pro', serif; font-weight: 600; font-size: 12.5px;
+  cursor: pointer; letter-spacing: 0.02em; transition: filter 0.15s;
+}
+.dm-btn:hover { filter: brightness(1.12); }
+.dm-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
+.dm-btn-quiet {
+  background: none; border: 1px solid rgba(200,160,64,0.35); color: var(--parchment-dim);
+}
+.dm-input, .dm-select {
+  background: rgba(240,228,192,0.06); border: 1px solid rgba(200,160,64,0.3);
+  color: var(--parchment); border-radius: 5px; padding: 6px 9px;
+  font-family: 'Crimson Pro', serif; font-size: 13px;
+}
+.dm-input:focus, .dm-select:focus { outline: 2px solid var(--brass-mid); outline-offset: 1px; }
+#note-text { flex: 1; min-width: 160px; }
+.day-input { width: 54px; }
+.year-input { width: 80px; }
+.dm-sync {
+  font-size: 10.5px; color: var(--parchment-dim); opacity: 0.55; text-align: center;
+  margin-top: 12px; font-style: italic;
+}
+.dm-sync.err { color: #d97757; opacity: 0.85; }
+.dm-sync-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--verdigris); margin-right: 5px; }
+.dm-sync-dot.err { background: #d97757; }
+
+/* View toggle */
+.view-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+.view-btn {
+  background: none; border: 1px solid rgba(200,160,64,0.3); color: var(--parchment-dim);
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 20px; cursor: pointer; transition: all 0.15s;
+}
+.view-btn.active {
+  background: linear-gradient(160deg, var(--brass-mid), var(--brass-dark));
+  color: var(--ink); border-color: var(--brass-mid);
+}
+.view-btn:hover:not(.active) { border-color: var(--brass-mid); color: var(--parchment); }
+.view-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
+
+.view-panel { display: none; }
+.view-panel.active { display: block; }
+
+/* Grid view */
+.grid-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 2px; }
+.grid-nav-btn {
+  background: none; border: 1px solid rgba(200,160,64,0.3); color: var(--brass-mid);
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.grid-nav-btn:hover { border-color: var(--brass-light); color: var(--brass-light); }
+.grid-nav-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
+.grid-month-label { font-family: 'Cinzel', serif; font-size: 14px; color: var(--brass-light); letter-spacing: 0.08em; text-align: center; }
+.grid-month-season {
+  display: block; font-size: 9px; color: var(--parchment-dim); opacity: 0.6;
+  letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; font-family: 'Crimson Pro', serif;
+}
+
+.day-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; }
+.day-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 5px; background: rgba(232,200,122,0.04); border: 1px solid rgba(200,160,64,0.15);
+  font-family: 'Crimson Pro', serif; font-size: 12.5px; color: var(--parchment-dim); position: relative;
+}
+.day-cell.today {
+  background: linear-gradient(160deg, var(--brass-mid), var(--brass-dark)); color: var(--ink);
+  border-color: var(--brass-light); box-shadow: 0 0 8px rgba(232,200,122,0.5); font-weight: 600;
+}
+.day-cell.festival::after {
+  content: ''; position: absolute; top: 3px; right: 3px; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--festival-glow);
+}
+.day-cell.has-note::before {
+  content: ''; position: absolute; bottom: 3px; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--brass-mid);
+}
+.day-cell.today.has-note::before { background: var(--ink); }
+.day-cell.clickable { cursor: pointer; }
+.day-cell.clickable:hover { border-color: var(--brass-mid); background: rgba(232,200,122,0.12); }
+
+@media (max-width: 480px) {
+  .date-main { font-size: 24px; }
+  .device-name { font-size: 17px; }
+  .dm-row { flex-direction: column; align-items: stretch; }
+  .day-cell { font-size: 11px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="housing">
+    <div class="inner">
+
+      <div class="title-plate">
+        <span class="device-name">The Abelon Almanac</span>
+        <span class="device-sub">a reckoning of days, kept in brass and glass</span>
+      </div>
+
+      <div class="view-toggle">
+        <button class="view-btn active" id="view-btn-dial">Dial</button>
+        <button class="view-btn" id="view-btn-grid">Grid</button>
+      </div>
+
+      <div class="view-panel active" id="panel-dial">
+        <div class="dial-wrap">
+          <svg id="dial" viewBox="0 0 320 320"></svg>
+        </div>
+      </div>
+
+      <div class="view-panel" id="panel-grid">
+        <div class="grid-header">
+          <button class="grid-nav-btn" id="grid-prev" aria-label="Previous month">‹</button>
+          <div class="grid-month-label" id="grid-month-label">—</div>
+          <button class="grid-nav-btn" id="grid-next" aria-label="Next month">›</button>
+        </div>
+        <div class="day-grid" id="day-grid"></div>
+      </div>
+
+      <div class="date-plate">
+        <div class="date-main" id="date-main">—</div>
+        <div class="date-sub" id="date-sub">—</div>
+      </div>
+      <div class="festival-note" id="festival-note"></div>
+
+      <div class="divider"></div>
+
+      <div class="log-title">Campaign Log</div>
+      <div class="log-list" id="log-list"></div>
+
+      <div class="dm-strip">
+        <button class="dm-toggle-btn" id="dm-toggle">Unlock DM Controls</button>
+      </div>
+
+      <div class="dm-panel" id="dm-panel">
+        <div class="dm-panel-title">Maintenance Panel — DM Only</div>
+
+        <div class="dm-row" style="justify-content:center;">
+          <button class="dm-btn dm-btn-quiet" id="btn-minus">− 1 Day</button>
+          <button class="dm-btn" id="btn-plus">+ 1 Day</button>
+        </div>
+
+        <div class="dm-row" style="justify-content:center;">
+          <label>Jump to</label>
+          <input type="number" class="dm-input day-input" id="jump-day" min="1" max="40" placeholder="DD">
+          <select class="dm-select" id="jump-month"></select>
+          <input type="number" class="dm-input year-input" id="jump-year" placeholder="YYYYY">
+          <button class="dm-btn dm-btn-quiet" id="btn-jump">Set Date</button>
+        </div>
+
+        <div class="divider" style="margin:14px 0;"></div>
+
+        <div class="dm-row">
+          <input type="text" class="dm-input" id="note-text" placeholder="Add a note for today's date…" maxlength="200">
+          <button class="dm-btn" id="btn-add-note">Add Note</button>
+        </div>
+
+        <div class="dm-sync" id="sync-status"><span class="dm-sync-dot" id="sync-dot"></span><span id="sync-text">Not yet synced</span></div>
+        <div class="dm-row" style="justify-content:center; margin-top:8px;">
+          <button class="dm-btn dm-btn-quiet" id="btn-sync">Sync Now</button>
+          <button class="dm-btn dm-btn-quiet" id="btn-lock">Lock Panel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   CONFIG — fill this in once you've set up a free JSON store.
+   Recommended: jsonbin.io (free tier)
+     1. Create an account at jsonbin.io
+     2. Create a new bin with this starting content:
+        {"currentDate":{"year":21942,"month":3,"day":19},"notes":{}}
+     3. Copy the Bin ID and your X-Master-Key into BIN_ID / API_KEY below.
+     4. Set STORAGE_MODE to 'jsonbin'.
+   Until configured, this runs in 'local' mode (browser-only, per-device) —
+   fine for testing, but DM edits won't reach players until you wire up sync.
+   ========================================================================= */
+const CONFIG = {
+  STORAGE_MODE: 'jsonbin',           // 'jsonbin' | 'local'
+  JSONBIN_BIN_ID: '6a549f63f5f4af5e29870119',
+  JSONBIN_API_KEY: '$2a$10$BdfEMi4O0SI/n0sjbexlUe1YTnv4AhYrrfurqqBE2nthnYcnUgRNe',
+  DM_PASSPHRASE: 'zareth',         // change this to whatever you like
+  POLL_SECONDS: 25                 // how often non-DM view checks for updates
+};
+
+const MONTHS = ['Saelwyn','Saelmora','Saeleth','Vanewyn','Vanemora','Vaneeth','Thalwyn','Thalmora','Thaleth'];
+const SEASON_OF_MONTH = ['spring','spring','spring','autumn','autumn','autumn','winter','winter','winter'];
+const SEASON_LABEL = { spring: 'Spring', autumn: 'Autumn', winter: 'Winter' };
+const FESTIVALS = [ { dayOfYear: 120, name: 'Halfbright' }, { dayOfYear: 240, name: 'Halfnight' }, { dayOfYear: 360, name: 'Nighthold' } ];
+const DAYS_PER_MONTH = 40, DAYS_PER_WEEK = 8, MONTHS_PER_YEAR = 9;
+
+let state = { currentDate: { year: 21942, month: 3, day: 19 }, notes: [] };
+let dmUnlocked = false;
+let pollTimer = null;
+let currentView = 'dial';
+let browsingMonth = null;
+let browsingYear = null;
+
+function ordinal(n) {
+  const s = ['th','st','nd','rd'], v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+function dayOfYear(month, day) { return (month - 1) * DAYS_PER_MONTH + day; }
+function noteKey(y, m, d) { return `${y}-${m}-${d}`; }
+function genId() { return 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function formatDate(y, m, d) { return `${ordinal(d)} ${MONTHS[m-1]}, ${y.toLocaleString('en-US')}`; }
+function monthAbbrev(m) { const name = MONTHS[m-1]; return `${name[0]}'${name.slice(-3)}`; }
+function shortDate(y, m, d) { return `${String(d).padStart(2,'0')}/${monthAbbrev(m)}/${String(y).slice(-3)}`; }
+
+/* Converts old single-note-per-date object format to the new array format.
+   Safe to run on already-migrated data (it's a no-op if notes is already an array). */
+function migrateNotes(s) {
+  if (Array.isArray(s.notes)) return s;
+  const migrated = Object.values(s.notes || {}).map(n => ({
+    id: genId(), year: n.year, month: n.month, day: n.day, text: n.text
+  }));
+  s.notes = migrated;
+  return s;
+}
+
+/* ---------- persistence ---------- */
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem('abelon-almanac-state');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+function saveLocal(s) {
+  try { localStorage.setItem('abelon-almanac-state', JSON.stringify(s)); } catch(e) {}
+}
+
+async function loadState() {
+  const cached = loadLocal();
+  if (cached) state = migrateNotes(cached);
+
+  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': CONFIG.JSONBIN_API_KEY }
+      });
+      if (!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      const wasArray = Array.isArray(data.record.notes);
+      state = migrateNotes(data.record);
+      saveLocal(state);
+      setSyncStatus(true, 'Synced ' + new Date().toLocaleTimeString());
+      if (!wasArray) saveState(); // push the migrated format back up so everyone converts
+    } catch (e) {
+      setSyncStatus(false, 'Sync failed — showing last known state');
+    }
+  }
+  render();
+}
+
+async function saveState() {
+  saveLocal(state);
+  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': CONFIG.JSONBIN_API_KEY },
+        body: JSON.stringify(state)
+      });
+      if (!res.ok) throw new Error('save failed');
+      setSyncStatus(true, 'Synced ' + new Date().toLocaleTimeString());
+    } catch (e) {
+      setSyncStatus(false, 'Could not reach the cloud store — saved locally only');
+    }
+  }
+  render();
+}
+
+function setSyncStatus(ok, text) {
+  const dot = document.getElementById('sync-dot');
+  const t = document.getElementById('sync-text');
+  if (!dot || !t) return;
+  dot.classList.toggle('err', !ok);
+  t.textContent = text;
+}
+
+/* ---------- date math ---------- */
+function advanceDay(delta) {
+  let { year, month, day } = state.currentDate;
+  day += delta;
+  while (day > DAYS_PER_MONTH) { day -= DAYS_PER_MONTH; month++; if (month > MONTHS_PER_YEAR) { month = 1; year++; } }
+  while (day < 1) { day += DAYS_PER_MONTH; month--; if (month < 1) { month = MONTHS_PER_YEAR; year--; } }
+  state.currentDate = { year, month, day };
+  browsingMonth = month; browsingYear = year;
+  saveState();
+}
+
+function jumpToDate(year, month, day) {
+  day = Math.min(Math.max(day, 1), DAYS_PER_MONTH);
+  month = Math.min(Math.max(month, 1), MONTHS_PER_YEAR);
+  state.currentDate = { year, month, day };
+  browsingMonth = month; browsingYear = year;
+  saveState();
+}
+
+function addNote(text) {
+  if (!text.trim()) return;
+  const { year, month, day } = state.currentDate;
+  state.notes.push({ id: genId(), year, month, day, text: text.trim() });
+  saveState();
+}
+
+function deleteNote(id) {
+  state.notes = state.notes.filter(n => n.id !== id);
+  saveState();
+}
+
+/* ---------- rendering ---------- */
+function render() {
+  const { year, month, day } = state.currentDate;
+  const season = SEASON_OF_MONTH[month - 1];
+
+  document.getElementById('date-main').textContent = formatDate(year, month, day);
+  const weekOfMonth = Math.ceil(day / DAYS_PER_WEEK);
+  const dayOfWeek = ((day - 1) % DAYS_PER_WEEK) + 1;
+  document.getElementById('date-sub').innerHTML =
+    `<span class="season-tag season-${season}">${SEASON_LABEL[season]}</span> &nbsp;\u00b7&nbsp; Week ${weekOfMonth} of month, Day ${dayOfWeek} of week`;
+
+  const doy = dayOfYear(month, day);
+  const todaysFestival = FESTIVALS.find(f => f.dayOfYear === doy);
+  const noteEl = document.getElementById('festival-note');
+  if (todaysFestival) {
+    noteEl.textContent = `Today is ${todaysFestival.name}`;
+  } else {
+    let next = FESTIVALS.find(f => f.dayOfYear > doy);
+    let daysUntil;
+    if (next) { daysUntil = next.dayOfYear - doy; }
+    else { next = FESTIVALS[0]; daysUntil = (360 - doy) + next.dayOfYear; }
+    noteEl.textContent = `${daysUntil} day${daysUntil === 1 ? '' : 's'} until ${next.name}`;
+  }
+
+  renderDial(doy);
+  if (currentView === 'grid') renderGrid();
+  renderLog();
+  syncDmInputsToCurrent();
+}
+
+function renderLog() {
+  const list = document.getElementById('log-list');
+  const entries = state.notes
+    .map(n => ({ ...n, doy: dayOfYear(n.month, n.day) }))
+    .sort((a, b) => (a.year - b.year) || (a.doy - b.doy) || (a.id < b.id ? -1 : 1));
+
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="log-empty">No entries yet — the pages are blank.</div>';
+    return;
+  }
+
+  entries.reverse(); // most recent day first; within a day, most-recently-added first
+
+  let prevKey = null;
+  list.innerHTML = entries.map(e => {
+    const key = `${e.year}-${e.month}-${e.day}`;
+    const showDate = key !== prevKey;
+    prevKey = key;
+    return `
+    <div class="log-entry">
+      <span class="log-date">${showDate ? shortDate(e.year, e.month, e.day) : ''}</span>
+      <span class="log-text">${escapeHtml(e.text)}</span>
+      ${dmUnlocked ? `<button class="log-del" data-id="${e.id}" title="Delete entry" aria-label="Delete entry">\u00d7</button>` : ''}
+    </div>
+  `;
+  }).join('');
+
+  if (dmUnlocked) {
+    list.querySelectorAll('.log-del').forEach(btn => {
+      btn.addEventListener('click', () => deleteNote(btn.dataset.id));
+    });
+  }
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ---------- dial (SVG) ---------- */
+function renderDial(doy) {
+  const cx = 160, cy = 160, rFace = 148, rRim = 152, rTickOuter = 140, rTickInner = 128, rLabel = 112, rHand = 118, rFestival = 148;
+  const seasonColor = { spring: 'var(--spring)', autumn: 'var(--autumn)', winter: 'var(--winter)' };
+
+  function pt(r, angleDeg) {
+    const a = (angleDeg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  }
+  function arcPath(rOuter, aStart, aEnd) {
+    const [x1,y1] = pt(rOuter, aStart), [x2,y2] = pt(rOuter, aEnd);
+    const large = (aEnd - aStart) % 360 > 180 ? 1 : 0;
+    return `M ${cx} ${cy} L ${x1} ${y1} A ${rOuter} ${rOuter} 0 ${large} 1 ${x2} ${y2} Z`;
+  }
+
+  let svg = `<circle class="dial-face" cx="${cx}" cy="${cy}" r="${rFace}"/>`;
+
+  MONTHS.forEach((m, i) => {
+    const aStart = i * 40, aEnd = aStart + 40;
+    const season = SEASON_OF_MONTH[i];
+    svg += `<path class="dial-season-arc" d="${arcPath(rFace, aStart, aEnd)}" fill="${seasonColor[season]}"/>`;
+  });
+
+  for (let d = 0; d < 360; d += 8) {
+    const major = d % 40 === 0;
+    const [ox,oy] = pt(rTickOuter, d);
+    const [ix,iy] = pt(major ? rTickInner - 8 : rTickInner, d);
+    svg += `<line class="dial-tick${major ? ' dial-tick-major' : ''}" x1="${ox}" y1="${oy}" x2="${ix}" y2="${iy}"/>`;
+  }
+
+  MONTHS.forEach((m, i) => {
+    const mid = i * 40 + 20;
+    const [lx,ly] = pt(rLabel, mid);
+    svg += `<text class="dial-month-label" x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle">${m}</text>`;
+  });
+
+  FESTIVALS.forEach(f => {
+    const angle = (f.dayOfYear / 360) * 360;
+    const [fx,fy] = pt(rFestival, angle);
+    svg += `<circle class="dial-festival" cx="${fx}" cy="${fy}" r="3.4"/>`;
+  });
+
+  const handAngle = (doy / 360) * 360;
+  const [hx,hy] = pt(rHand, handAngle);
+  svg += `<line class="dial-hand" x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" stroke-width="2"/>`;
+  svg += `<circle class="dial-hub" cx="${cx}" cy="${cy}" r="6"/>`;
+
+  svg += `<circle class="dial-rim" cx="${cx}" cy="${cy}" r="${rRim}"/>`;
+
+  document.getElementById('dial').innerHTML = svg;
+}
+
+/* ---------- grid view ---------- */
+function renderGrid() {
+  if (browsingMonth === null) { browsingMonth = state.currentDate.month; browsingYear = state.currentDate.year; }
+
+  const season = SEASON_OF_MONTH[browsingMonth - 1];
+  document.getElementById('grid-month-label').innerHTML =
+    `${MONTHS[browsingMonth - 1]}<span class="grid-month-season">${SEASON_LABEL[season]} · ${browsingYear.toLocaleString('en-US')}</span>`;
+
+  const grid = document.getElementById('day-grid');
+  let html = '';
+  for (let d = 1; d <= DAYS_PER_MONTH; d++) {
+    const isToday = browsingYear === state.currentDate.year && browsingMonth === state.currentDate.month && d === state.currentDate.day;
+    const doy = dayOfYear(browsingMonth, d);
+    const festival = FESTIVALS.find(f => f.dayOfYear === doy);
+    const hasNote = state.notes.some(n => n.year === browsingYear && n.month === browsingMonth && n.day === d);
+    const classes = ['day-cell'];
+    if (isToday) classes.push('today');
+    if (festival) classes.push('festival');
+    if (hasNote) classes.push('has-note');
+    if (dmUnlocked) classes.push('clickable');
+    const title = festival ? festival.name : '';
+    html += `<div class="${classes.join(' ')}" data-day="${d}" title="${title}">${d}</div>`;
+  }
+  grid.innerHTML = html;
+
+  if (dmUnlocked) {
+    grid.querySelectorAll('.day-cell').forEach(cell => {
+      cell.addEventListener('click', () => jumpToDate(browsingYear, browsingMonth, parseInt(cell.dataset.day, 10)));
+    });
+  }
+}
+
+function changeBrowsingMonth(delta) {
+  if (browsingMonth === null) { browsingMonth = state.currentDate.month; browsingYear = state.currentDate.year; }
+  browsingMonth += delta;
+  if (browsingMonth > MONTHS_PER_YEAR) { browsingMonth = 1; browsingYear++; }
+  if (browsingMonth < 1) { browsingMonth = MONTHS_PER_YEAR; browsingYear--; }
+  renderGrid();
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('panel-dial').classList.toggle('active', v === 'dial');
+  document.getElementById('panel-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('view-btn-dial').classList.toggle('active', v === 'dial');
+  document.getElementById('view-btn-grid').classList.toggle('active', v === 'grid');
+  if (v === 'grid') { renderGrid(); }
+}
+
+/* ---------- DM controls ---------- */
+function syncDmInputsToCurrent() {
+  const { year, month, day } = state.currentDate;
+  const dayInput = document.getElementById('jump-day');
+  const yearInput = document.getElementById('jump-year');
+  const monthSelect = document.getElementById('jump-month');
+  if (document.activeElement !== dayInput) dayInput.value = day;
+  if (document.activeElement !== yearInput) yearInput.value = year;
+  if (document.activeElement !== monthSelect) monthSelect.value = month;
+}
+
+function populateMonthSelect() {
+  const sel = document.getElementById('jump-month');
+  sel.innerHTML = MONTHS.map((m, i) => `<option value="${i+1}">${m}</option>`).join('');
+}
+
+function setDmUnlocked(v) {
+  dmUnlocked = v;
+  document.getElementById('dm-panel').classList.toggle('unlocked', v);
+  document.getElementById('dm-toggle').style.display = v ? 'none' : 'inline-block';
+  if (v) { stopPolling(); } else { startPolling(); }
+  render();
+}
+
+function startPolling() {
+  stopPolling();
+  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
+    pollTimer = setInterval(loadState, CONFIG.POLL_SECONDS * 1000);
+  }
+}
+function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null; }
+
+/* ---------- wire up events ---------- */
+document.getElementById('dm-toggle').addEventListener('click', () => {
+  const pass = prompt('DM passphrase:');
+  if (pass === CONFIG.DM_PASSPHRASE) setDmUnlocked(true);
+  else if (pass !== null) alert('Wrong passphrase.');
+});
+document.getElementById('btn-lock').addEventListener('click', () => setDmUnlocked(false));
+document.getElementById('btn-plus').addEventListener('click', () => advanceDay(1));
+document.getElementById('btn-minus').addEventListener('click', () => advanceDay(-1));
+document.getElementById('btn-jump').addEventListener('click', () => {
+  const day = parseInt(document.getElementById('jump-day').value, 10);
+  const month = parseInt(document.getElementById('jump-month').value, 10);
+  const year = parseInt(document.getElementById('jump-year').value, 10);
+  if (!day || !month || !year) { alert('Fill in day, month, and year.'); return; }
+  jumpToDate(year, month, day);
+});
+document.getElementById('btn-add-note').addEventListener('click', () => {
+  const input = document.getElementById('note-text');
+  addNote(input.value);
+  input.value = '';
+});
+document.getElementById('note-text').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('btn-add-note').click();
+});
+document.getElementById('btn-sync').addEventListener('click', loadState);
+
+document.getElementById('view-btn-dial').addEventListener('click', () => setView('dial'));
+document.getElementById('view-btn-grid').addEventListener('click', () => setView('grid'));
+document.getElementById('grid-prev').addEventListener('click', () => changeBrowsingMonth(-1));
+document.getElementById('grid-next').addEventListener('click', () => changeBrowsingMonth(1));
+
+populateMonthSelect();
+loadState();
+startPolling();
+</script>
+</body>
+</html>

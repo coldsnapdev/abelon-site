@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abelon — The Weight of the World</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #1a1208;
+    --bg2: #241a0e;
+    --bg3: #2e2010;
+    --ink: #e8d9bc;
+    --ink2: #c4a882;
+    --ink3: #8a7a65;
+    --accent: #c4a882;
+    --gold: #d4a940;
+    --rule: #5a4a38;
+    --rule-faint: rgba(90,74,56,0.4);
+    --card-bg: rgba(36,26,14,0.8);
+    --card-border: rgba(196,168,130,0.2);
+    --card-hover: rgba(196,168,130,0.08);
+    --blue: #85B7EB;
+    --blue-bg: rgba(133,183,235,0.08);
+    --blue-border: rgba(133,183,235,0.2);
+    --teal: #5DCAA5;
+    --teal-bg: rgba(93,202,165,0.08);
+    --teal-border: rgba(93,202,165,0.2);
+    --gold-bg: rgba(212,169,64,0.08);
+    --gold-border: rgba(212,169,64,0.2);
+    --pink: #ED93B1;
+    --pink-bg: rgba(237,147,177,0.08);
+    --pink-border: rgba(237,147,177,0.2);
+    --purple: #B59AE8;
+    --purple-bg: rgba(181,154,232,0.08);
+    --purple-border: rgba(181,154,232,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(60,40,15,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(15,10,5,0.8) 0%, transparent 60%);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0 0 4rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 4rem 2rem 3rem;
+    border-bottom: .5px solid var(--rule-faint);
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(196,168,130,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55em;
+    letter-spacing: .5em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2em, 6vw, 3.5em);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .05em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.7em, 2vw, 0.9em);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 24px;
+  }
+  .hero-rule {
+    width: 120px;
+    height: .5px;
+    background: var(--rule);
+    margin: 0 auto 24px;
+  }
+  .hero-intro {
+    font-size: 0.88em;
+    font-style: italic;
+    color: var(--ink2);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── Today banner ── */
+  .today-banner {
+    display: block;
+    text-align: center;
+    padding: 2.2rem 2rem 2.4rem;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: .5px solid var(--rule-faint);
+    position: relative;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,169,64,0.09) 0%, transparent 65%);
+    transition: background .2s;
+  }
+  .today-banner:hover { background: radial-gradient(ellipse at 50% 0%, rgba(212,169,64,0.16) 0%, transparent 65%); }
+  .today-banner:hover .today-cta { color: var(--gold); }
+  .today-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5em;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 14px;
+    opacity: .85;
+  }
+  .today-date {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6em, 5vw, 2.6em);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: .03em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .today-sub {
+    font-size: 0.82em;
+    font-style: italic;
+    color: var(--ink2);
+    margin-bottom: 4px;
+  }
+  .today-festival {
+    font-size: 0.72em;
+    font-style: italic;
+    color: var(--ink3);
+    margin-bottom: 18px;
+  }
+  .today-cta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58em;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    transition: color .2s;
+  }
+
+
+  .page { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ── Section heading ── */
+  .section-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5em;
+    font-weight: 600;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    border-bottom: .5px solid var(--rule-faint);
+    padding-bottom: 8px;
+    margin: 2.5rem 0 1rem;
+  }
+
+  /* ── Card grid ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    margin-bottom: .5rem;
+  }
+  .card-grid.wide { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+
+  /* ── Card ── */
+  .card {
+    display: block;
+    background: var(--card-bg);
+    border: .5px solid var(--card-border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    text-decoration: none;
+    transition: background .15s, border-color .15s;
+    cursor: pointer;
+  }
+  .card:hover { background: var(--card-hover); }
+  .card.blue { border-color: var(--blue-border); }
+  .card.blue:hover { background: var(--blue-bg); }
+  .card.teal { border-color: var(--teal-border); }
+  .card.teal:hover { background: var(--teal-bg); }
+  .card.gold { border-color: var(--gold-border); }
+  .card.gold:hover { background: var(--gold-bg); }
+  .card.pink { border-color: var(--pink-border); }
+  .card.pink:hover { background: var(--pink-bg); }
+  .card.purple { border-color: var(--purple-border); }
+  .card.purple:hover { background: var(--purple-bg); }
+
+  .card-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.47em;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .card.blue .card-eyebrow { color: var(--blue); }
+  .card.teal .card-eyebrow { color: var(--teal); }
+  .card.gold .card-eyebrow { color: var(--gold); }
+  .card.pink .card-eyebrow { color: var(--pink); }
+  .card.purple .card-eyebrow { color: var(--purple); }
+  .card:not([class*=' ']) .card-eyebrow { color: var(--ink3); }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 0.78em;
+    color: var(--ink2);
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .card-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.44em;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: .5px solid var(--rule-faint);
+    color: var(--ink3);
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: .5px solid var(--rule-faint);
+    text-align: center;
+    font-size: 0.72em;
+    font-style: italic;
+    color: var(--ink3);
+  }
+  footer .ornament {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5em;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 6px;
+    opacity: .5;
+  }
+  .slider-bar{position:fixed;bottom:20px;right:20px;background:var(--bg2);border:.5px solid var(--rule);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:10px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.4);}
+  .slider-bar label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;}
+  .slider-bar input{width:90px;accent-color:var(--gold);}
+  .slider-bar span{font-family:'Cinzel',serif;font-size:9px;color:var(--ink3);min-width:28px;text-align:right;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-label">A Campaign in the Western Reach of Westmere</span>
+  <div class="hero-title">Abelon</div>
+  <div class="hero-subtitle">The Weight of the World</div>
+  <div class="hero-rule"></div>
+  <p class="hero-intro">Everything you need before the adventure begins. Read what you can. Come with questions. The world will do the rest.</p>
+</div>
+
+<a class="today-banner" href="https://abelon.netlify.app/abelon-almanac.html" id="today-banner">
+  <span class="today-eyebrow">Today in Abelon</span>
+  <div class="today-date" id="today-date-main">Consulting the almanac…</div>
+  <div class="today-sub" id="today-date-sub"></div>
+  <div class="today-festival" id="today-festival"></div>
+  <span class="today-cta">Open the Almanac →</span>
+</a>
+
+<div class="page">
+
+  <!-- BEFORE YOU BEGIN -->
+  <div class="section-heading">Before you begin</div>
+  <div class="card-grid">
+
+    <a class="card teal" href="https://abelon.netlify.app/playerhandout_gods.html">
+      <span class="card-eyebrow">World reference</span>
+      <span class="card-title">The Gods of Abelon</span>
+      <span class="card-desc">The eight major gods and the minor pantheon. Essential reading for understanding how belief and power work in this world.</span>
+      <span class="card-tag">Player handout</span>
+    </a>
+
+    <a class="card teal" href="https://abelon.netlify.app/playerhandout_society.html">
+      <span class="card-eyebrow">World reference</span>
+      <span class="card-title">Life in Westmere</span>
+      <span class="card-desc">A primer on society, power, law, and daily life in the Western Reach. Includes a narrated introduction.</span>
+      <span class="card-tag">Player handout</span>
+    </a>
+
+    <a class="card gold" href="https://abelon.netlify.app/abelon-dicecloud-setup.html">
+      <span class="card-eyebrow">Character setup</span>
+      <span class="card-title">DiceCloud Setup Guide</span>
+      <span class="card-desc">Step-by-step instructions for setting up your character sheet, subscribing to the right libraries, and connecting to the campaign Discord.</span>
+      <span class="card-tag">Required before Session Zero</span>
+    </a>
+
+  </div>
+
+  <!-- DURING THE CAMPAIGN -->
+  <div class="section-heading">During the campaign</div>
+  <div class="card-grid">
+
+    <a class="card pink" href="https://abelon.netlify.app/abelon-almanac.html">
+      <span class="card-eyebrow">Session tool</span>
+      <span class="card-title">The Abelon Almanac</span>
+      <span class="card-desc">Track today's date in the world of Abelon, see how far off the next festival is, and follow the DM's log of what's happened so far.</span>
+      <span class="card-tag">Updated by your DM</span>
+    </a>
+
+  </div>
+
+  <!-- RULEBOOKS -->
+  <div class="section-heading">Rulebooks</div>
+  <div class="card-grid wide">
+
+    <a class="card blue" href="https://online.anyflip.com/mldog/ynbn/mobile/" target="_blank" rel="noopener">
+      <span class="card-eyebrow">Core rules</span>
+      <span class="card-title">Player's Handbook 2024</span>
+      <span class="card-desc">The primary rulebook for D&amp;D 2024. Classes, species, spells, equipment, and the rules of play. Start here if you are new to the system.</span>
+      <span class="card-tag">External link</span>
+    </a>
+
+    <a class="card purple" href="https://abelon.netlify.app/heroes-of-faerun_compress.pdf" target="_blank">
+      <span class="card-eyebrow">Supplement</span>
+      <span class="card-title">Heroes of Faerûn</span>
+      <span class="card-desc">Additional character options from the Forgotten Realms. Species, subclasses, and backgrounds that may suit characters with unusual origins.</span>
+      <span class="card-tag">PDF · 218 pages</span>
+    </a>
+
+    <a class="card purple" href="https://abelon.netlify.app/book_of_hungers.pdf" target="_blank">
+      <span class="card-eyebrow">Supplement</span>
+      <span class="card-title">Astarion's Book of Hungers</span>
+      <span class="card-desc">Additional character options. Worth a look if you are building something with a darker edge.</span>
+      <span class="card-tag">PDF</span>
+    </a>
+
+  </div>
+
+  <!-- THE WORLD -->
+  <div class="section-heading">The world</div>
+  <div class="card-grid">
+
+    <div class="card gold" style="cursor:default;">
+      <span class="card-eyebrow">Map</span>
+      <span class="card-title">Tallowhaven</span>
+      <span class="card-desc">Where the campaign begins. A trade city in the Western Reach, preparing for a festival and an important signing. The map will be provided at Session Zero.</span>
+      <span class="card-tag">Coming at Session Zero</span>
+    </div>
+
+    <a class="card teal" href="https://abelon.netlify.app/world_map.png" target="_blank">
+      <span class="card-eyebrow">Map</span>
+      <span class="card-title">Westmere — World Map</span>
+      <span class="card-desc">The continent of Westmere, showing cities, towns, and regions. The Western Reach is where the campaign begins.</span>
+      <span class="card-tag">Image</span>
+    </a>
+
+  </div>
+
+  <footer>
+    Abelon — The Weight of the World
+    <span class="ornament">The Western Reach &nbsp;·&nbsp; Westmere</span>
+  </footer>
+
+</div>
+<div class="slider-bar">
+  <label>Text size</label>
+  <input type="range" min="12" max="26" value="18" step="0.5" id="font-slider" oninput="updateSize(this.value)">
+  <span id="size-val">18px</span>
+</div>
+
+<script>
+function updateSize(val) {
+  document.body.style.fontSize = val + 'px';
+  document.getElementById('size-val').textContent = val + 'px';
+}
+</script>
+
+<script>
+/* =========================================================================
+   Pulls "today" from the same jsonbin store the Almanac writes to.
+   Use the SAME Bin ID and Master Key as abelon-almanac.html's CONFIG,
+   so both pages read the one shared date.
+   ========================================================================= */
+const ALMANAC_CONFIG = {
+  JSONBIN_BIN_ID: '6a549f63f5f4af5e29870119',
+  JSONBIN_API_KEY: '$2a$10$BdfEMi4O0SI/n0sjbexlUe1YTnv4AhYrrfurqqBE2nthnYcnUgRNe'
+};
+
+const ALMANAC_MONTHS = ['Saelwyn','Saelmora','Saeleth','Vanewyn','Vanemora','Vaneeth','Thalwyn','Thalmora','Thaleth'];
+const ALMANAC_SEASON_OF_MONTH = ['Spring','Spring','Spring','Autumn','Autumn','Autumn','Winter','Winter','Winter'];
+const ALMANAC_FESTIVALS = [ { dayOfYear: 120, name: 'Halfbright' }, { dayOfYear: 240, name: 'Halfnight' }, { dayOfYear: 360, name: 'Nighthold' } ];
+const ALMANAC_DAYS_PER_MONTH = 40, ALMANAC_DAYS_PER_WEEK = 8;
+
+function almanacOrdinal(n) {
+  const s = ['th','st','nd','rd'], v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+async function loadTodayBanner() {
+  const dateEl = document.getElementById('today-date-main');
+  const subEl = document.getElementById('today-date-sub');
+  const festEl = document.getElementById('today-festival');
+  if (!dateEl) return;
+
+  if (ALMANAC_CONFIG.JSONBIN_BIN_ID === 'YOUR_BIN_ID_HERE') {
+    dateEl.textContent = 'The Almanac awaits';
+    subEl.textContent = 'Set up the shared calendar to see today\'s date here';
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${ALMANAC_CONFIG.JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': ALMANAC_CONFIG.JSONBIN_API_KEY }
+    });
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    const { year, month, day } = data.record.currentDate;
+
+    dateEl.textContent = `${almanacOrdinal(day)} ${ALMANAC_MONTHS[month-1]}, ${year.toLocaleString('en-US')}`;
+
+    const season = ALMANAC_SEASON_OF_MONTH[month - 1];
+    const weekOfMonth = Math.ceil(day / ALMANAC_DAYS_PER_WEEK);
+    const dayOfWeek = ((day - 1) % ALMANAC_DAYS_PER_WEEK) + 1;
+    subEl.textContent = `${season} · Week ${weekOfMonth} of month, Day ${dayOfWeek} of week`;
+
+    const doy = (month - 1) * ALMANAC_DAYS_PER_MONTH + day;
+    const todaysFestival = ALMANAC_FESTIVALS.find(f => f.dayOfYear === doy);
+    if (todaysFestival) {
+      festEl.textContent = `Today is ${todaysFestival.name}`;
+    } else {
+      let next = ALMANAC_FESTIVALS.find(f => f.dayOfYear > doy);
+      let daysUntil;
+      if (next) { daysUntil = next.dayOfYear - doy; }
+      else { next = ALMANAC_FESTIVALS[0]; daysUntil = (360 - doy) + next.dayOfYear; }
+      festEl.textContent = `${daysUntil} day${daysUntil === 1 ? '' : 's'} until ${next.name}`;
+    }
+  } catch (e) {
+    dateEl.textContent = 'Open the Almanac';
+    subEl.textContent = 'Couldn\'t reach the calendar just now — click through to check the date';
+  }
+}
+loadTodayBanner();
+</script>
+
+</body>
+</html>
