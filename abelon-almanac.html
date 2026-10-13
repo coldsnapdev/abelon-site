@@ -151,63 +151,6 @@ body {
 }
 .log-text { font-size: 13.5px; color: var(--parchment-dim); line-height: 1.4; flex: 1; }
 .log-empty { text-align: center; font-style: italic; font-size: 12.5px; color: var(--parchment-dim); opacity: 0.5; padding: 10px; }
-.log-del {
-  background: none; border: none; color: rgba(200,120,90,0.6); cursor: pointer;
-  font-size: 15px; line-height: 1; padding: 0 2px; flex-shrink: 0;
-}
-.log-del:hover { color: #d97757; }
-
-/* DM lock strip */
-.dm-strip { text-align: center; margin-top: 20px; }
-.dm-toggle-btn {
-  background: none; border: 1px solid rgba(200,160,64,0.3); color: var(--parchment-dim);
-  font-family: 'Crimson Pro', serif; font-size: 11px; letter-spacing: 0.05em;
-  padding: 6px 14px; border-radius: 20px; cursor: pointer; opacity: 0.6;
-  transition: opacity 0.15s, border-color 0.15s;
-}
-.dm-toggle-btn:hover { opacity: 1; border-color: var(--brass-mid); }
-.dm-toggle-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
-
-/* DM panel */
-.dm-panel {
-  margin-top: 18px; padding: 18px; border-radius: 8px;
-  background: rgba(0,0,0,0.25); border: 1px solid rgba(200,160,64,0.25);
-  display: none;
-}
-.dm-panel.unlocked { display: block; }
-.dm-panel-title {
-  font-family: 'Cinzel', serif; font-size: 11px; color: var(--brass-mid);
-  letter-spacing: 0.12em; margin-bottom: 14px; text-align: center; text-transform: uppercase;
-}
-.dm-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
-.dm-row label { font-size: 11.5px; color: var(--parchment-dim); min-width: 50px; }
-.dm-btn {
-  background: linear-gradient(160deg, var(--brass-mid), var(--brass-dark));
-  color: var(--ink); border: none; border-radius: 5px; padding: 7px 13px;
-  font-family: 'Crimson Pro', serif; font-weight: 600; font-size: 12.5px;
-  cursor: pointer; letter-spacing: 0.02em; transition: filter 0.15s;
-}
-.dm-btn:hover { filter: brightness(1.12); }
-.dm-btn:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 2px; }
-.dm-btn-quiet {
-  background: none; border: 1px solid rgba(200,160,64,0.35); color: var(--parchment-dim);
-}
-.dm-input, .dm-select {
-  background: rgba(240,228,192,0.06); border: 1px solid rgba(200,160,64,0.3);
-  color: var(--parchment); border-radius: 5px; padding: 6px 9px;
-  font-family: 'Crimson Pro', serif; font-size: 13px;
-}
-.dm-input:focus, .dm-select:focus { outline: 2px solid var(--brass-mid); outline-offset: 1px; }
-#note-text { flex: 1; min-width: 160px; }
-.day-input { width: 54px; }
-.year-input { width: 80px; }
-.dm-sync {
-  font-size: 10.5px; color: var(--parchment-dim); opacity: 0.55; text-align: center;
-  margin-top: 12px; font-style: italic;
-}
-.dm-sync.err { color: #d97757; opacity: 0.85; }
-.dm-sync-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--verdigris); margin-right: 5px; }
-.dm-sync-dot.err { background: #d97757; }
 
 /* View toggle */
 .view-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
@@ -260,13 +203,10 @@ body {
   border-radius: 50%; background: var(--brass-mid);
 }
 .day-cell.today.has-note::before { background: var(--ink); }
-.day-cell.clickable { cursor: pointer; }
-.day-cell.clickable:hover { border-color: var(--brass-mid); background: rgba(232,200,122,0.12); }
 
 @media (max-width: 480px) {
   .date-main { font-size: 24px; }
   .device-name { font-size: 17px; }
-  .dm-row { flex-direction: column; align-items: stretch; }
   .day-cell { font-size: 11px; }
 }
 
@@ -314,63 +254,18 @@ body {
       <div class="log-title">Campaign Log</div>
       <div class="log-list" id="log-list"></div>
 
-      <div class="dm-strip">
-        <button class="dm-toggle-btn" id="dm-toggle">Unlock DM Controls</button>
-      </div>
-
-      <div class="dm-panel" id="dm-panel">
-        <div class="dm-panel-title">Maintenance Panel — DM Only</div>
-
-        <div class="dm-row" style="justify-content:center;">
-          <button class="dm-btn dm-btn-quiet" id="btn-minus">− 1 Day</button>
-          <button class="dm-btn" id="btn-plus">+ 1 Day</button>
-        </div>
-
-        <div class="dm-row" style="justify-content:center;">
-          <label>Jump to</label>
-          <input type="number" class="dm-input day-input" id="jump-day" min="1" max="40" placeholder="DD">
-          <select class="dm-select" id="jump-month"></select>
-          <input type="number" class="dm-input year-input" id="jump-year" placeholder="YYYYY">
-          <button class="dm-btn dm-btn-quiet" id="btn-jump">Set Date</button>
-        </div>
-
-        <div class="divider" style="margin:14px 0;"></div>
-
-        <div class="dm-row">
-          <input type="text" class="dm-input" id="note-text" placeholder="Add a note for today's date…" maxlength="200">
-          <button class="dm-btn" id="btn-add-note">Add Note</button>
-        </div>
-
-        <div class="dm-sync" id="sync-status"><span class="dm-sync-dot" id="sync-dot"></span><span id="sync-text">Not yet synced</span></div>
-        <div class="dm-row" style="justify-content:center; margin-top:8px;">
-          <button class="dm-btn dm-btn-quiet" id="btn-sync">Sync Now</button>
-          <button class="dm-btn dm-btn-quiet" id="btn-lock">Lock Panel</button>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
 
 <script>
 /* =========================================================================
-   CONFIG — fill this in once you've set up a free JSON store.
-   Recommended: jsonbin.io (free tier)
-     1. Create an account at jsonbin.io
-     2. Create a new bin with this starting content:
-        {"currentDate":{"year":21942,"month":3,"day":19},"notes":{}}
-     3. Copy the Bin ID and your X-Master-Key into BIN_ID / API_KEY below.
-     4. Set STORAGE_MODE to 'jsonbin'.
-   Until configured, this runs in 'local' mode (browser-only, per-device) —
-   fine for testing, but DM edits won't reach players until you wire up sync.
+   The almanac's state (current date + campaign log notes) is read from
+   almanac.json, a static file alongside this page in the same repo.
+   There is no in-browser editor — updates are made by editing almanac.json
+   directly and pushing, so every viewer always sees the same, current log.
    ========================================================================= */
-const CONFIG = {
-  STORAGE_MODE: 'jsonbin',           // 'jsonbin' | 'local'
-  JSONBIN_BIN_ID: '6a549f63f5f4af5e29870119',
-  JSONBIN_API_KEY: '$2a$10$BdfEMi4O0SI/n0sjbexlUe1YTnv4AhYrrfurqqBE2nthnYcnUgRNe',
-  DM_PASSPHRASE: 'zareth',         // change this to whatever you like
-  POLL_SECONDS: 25                 // how often non-DM view checks for updates
-};
+const ALMANAC_DATA_URL = 'almanac.json';
 
 const MONTHS = ['Saelwyn','Saelmora','Saeleth','Vanewyn','Vanemora','Vaneeth','Thalwyn','Thalmora','Thaleth'];
 const SEASON_OF_MONTH = ['spring','spring','spring','autumn','autumn','autumn','winter','winter','winter'];
@@ -379,8 +274,6 @@ const FESTIVALS = [ { dayOfYear: 120, name: 'Halfbright' }, { dayOfYear: 240, na
 const DAYS_PER_MONTH = 40, DAYS_PER_WEEK = 8, MONTHS_PER_YEAR = 9;
 
 let state = { currentDate: { year: 21942, month: 3, day: 19 }, notes: [] };
-let dmUnlocked = false;
-let pollTimer = null;
 let currentView = 'dial';
 let browsingMonth = null;
 let browsingYear = null;
@@ -408,95 +301,16 @@ function migrateNotes(s) {
 }
 
 /* ---------- persistence ---------- */
-function loadLocal() {
-  try {
-    const raw = localStorage.getItem('abelon-almanac-state');
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return null;
-}
-function saveLocal(s) {
-  try { localStorage.setItem('abelon-almanac-state', JSON.stringify(s)); } catch(e) {}
-}
-
 async function loadState() {
-  const cached = loadLocal();
-  if (cached) state = migrateNotes(cached);
-
-  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': CONFIG.JSONBIN_API_KEY }
-      });
-      if (!res.ok) throw new Error('fetch failed');
-      const data = await res.json();
-      const wasArray = Array.isArray(data.record.notes);
-      state = migrateNotes(data.record);
-      saveLocal(state);
-      setSyncStatus(true, 'Synced ' + new Date().toLocaleTimeString());
-      if (!wasArray) saveState(); // push the migrated format back up so everyone converts
-    } catch (e) {
-      setSyncStatus(false, 'Sync failed — showing last known state');
-    }
+  try {
+    const res = await fetch(ALMANAC_DATA_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    state = migrateNotes(data);
+  } catch (e) {
+    // Leave `state` at its last-known value (the defaults, on first load).
   }
   render();
-}
-
-async function saveState() {
-  saveLocal(state);
-  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': CONFIG.JSONBIN_API_KEY },
-        body: JSON.stringify(state)
-      });
-      if (!res.ok) throw new Error('save failed');
-      setSyncStatus(true, 'Synced ' + new Date().toLocaleTimeString());
-    } catch (e) {
-      setSyncStatus(false, 'Could not reach the cloud store — saved locally only');
-    }
-  }
-  render();
-}
-
-function setSyncStatus(ok, text) {
-  const dot = document.getElementById('sync-dot');
-  const t = document.getElementById('sync-text');
-  if (!dot || !t) return;
-  dot.classList.toggle('err', !ok);
-  t.textContent = text;
-}
-
-/* ---------- date math ---------- */
-function advanceDay(delta) {
-  let { year, month, day } = state.currentDate;
-  day += delta;
-  while (day > DAYS_PER_MONTH) { day -= DAYS_PER_MONTH; month++; if (month > MONTHS_PER_YEAR) { month = 1; year++; } }
-  while (day < 1) { day += DAYS_PER_MONTH; month--; if (month < 1) { month = MONTHS_PER_YEAR; year--; } }
-  state.currentDate = { year, month, day };
-  browsingMonth = month; browsingYear = year;
-  saveState();
-}
-
-function jumpToDate(year, month, day) {
-  day = Math.min(Math.max(day, 1), DAYS_PER_MONTH);
-  month = Math.min(Math.max(month, 1), MONTHS_PER_YEAR);
-  state.currentDate = { year, month, day };
-  browsingMonth = month; browsingYear = year;
-  saveState();
-}
-
-function addNote(text) {
-  if (!text.trim()) return;
-  const { year, month, day } = state.currentDate;
-  state.notes.push({ id: genId(), year, month, day, text: text.trim() });
-  saveState();
-}
-
-function deleteNote(id) {
-  state.notes = state.notes.filter(n => n.id !== id);
-  saveState();
 }
 
 /* ---------- rendering ---------- */
@@ -526,7 +340,6 @@ function render() {
   renderDial(doy);
   if (currentView === 'grid') renderGrid();
   renderLog();
-  syncDmInputsToCurrent();
 }
 
 function renderLog() {
@@ -551,16 +364,9 @@ function renderLog() {
     <div class="log-entry">
       <span class="log-date">${showDate ? shortDate(e.year, e.month, e.day) : ''}</span>
       <span class="log-text">${escapeHtml(e.text)}</span>
-      ${dmUnlocked ? `<button class="log-del" data-id="${e.id}" title="Delete entry" aria-label="Delete entry">\u00d7</button>` : ''}
     </div>
   `;
   }).join('');
-
-  if (dmUnlocked) {
-    list.querySelectorAll('.log-del').forEach(btn => {
-      btn.addEventListener('click', () => deleteNote(btn.dataset.id));
-    });
-  }
 }
 
 function escapeHtml(str) {
@@ -640,17 +446,10 @@ function renderGrid() {
     if (isToday) classes.push('today');
     if (festival) classes.push('festival');
     if (hasNote) classes.push('has-note');
-    if (dmUnlocked) classes.push('clickable');
     const title = festival ? festival.name : '';
     html += `<div class="${classes.join(' ')}" data-day="${d}" title="${title}">${d}</div>`;
   }
   grid.innerHTML = html;
-
-  if (dmUnlocked) {
-    grid.querySelectorAll('.day-cell').forEach(cell => {
-      cell.addEventListener('click', () => jumpToDate(browsingYear, browsingMonth, parseInt(cell.dataset.day, 10)));
-    });
-  }
 }
 
 function changeBrowsingMonth(delta) {
@@ -670,72 +469,13 @@ function setView(v) {
   if (v === 'grid') { renderGrid(); }
 }
 
-/* ---------- DM controls ---------- */
-function syncDmInputsToCurrent() {
-  const { year, month, day } = state.currentDate;
-  const dayInput = document.getElementById('jump-day');
-  const yearInput = document.getElementById('jump-year');
-  const monthSelect = document.getElementById('jump-month');
-  if (document.activeElement !== dayInput) dayInput.value = day;
-  if (document.activeElement !== yearInput) yearInput.value = year;
-  if (document.activeElement !== monthSelect) monthSelect.value = month;
-}
-
-function populateMonthSelect() {
-  const sel = document.getElementById('jump-month');
-  sel.innerHTML = MONTHS.map((m, i) => `<option value="${i+1}">${m}</option>`).join('');
-}
-
-function setDmUnlocked(v) {
-  dmUnlocked = v;
-  document.getElementById('dm-panel').classList.toggle('unlocked', v);
-  document.getElementById('dm-toggle').style.display = v ? 'none' : 'inline-block';
-  if (v) { stopPolling(); } else { startPolling(); }
-  render();
-}
-
-function startPolling() {
-  stopPolling();
-  if (CONFIG.STORAGE_MODE === 'jsonbin' && CONFIG.JSONBIN_BIN_ID !== 'YOUR_BIN_ID_HERE') {
-    pollTimer = setInterval(loadState, CONFIG.POLL_SECONDS * 1000);
-  }
-}
-function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null; }
-
 /* ---------- wire up events ---------- */
-document.getElementById('dm-toggle').addEventListener('click', () => {
-  const pass = prompt('DM passphrase:');
-  if (pass === CONFIG.DM_PASSPHRASE) setDmUnlocked(true);
-  else if (pass !== null) alert('Wrong passphrase.');
-});
-document.getElementById('btn-lock').addEventListener('click', () => setDmUnlocked(false));
-document.getElementById('btn-plus').addEventListener('click', () => advanceDay(1));
-document.getElementById('btn-minus').addEventListener('click', () => advanceDay(-1));
-document.getElementById('btn-jump').addEventListener('click', () => {
-  const day = parseInt(document.getElementById('jump-day').value, 10);
-  const month = parseInt(document.getElementById('jump-month').value, 10);
-  const year = parseInt(document.getElementById('jump-year').value, 10);
-  if (!day || !month || !year) { alert('Fill in day, month, and year.'); return; }
-  jumpToDate(year, month, day);
-});
-document.getElementById('btn-add-note').addEventListener('click', () => {
-  const input = document.getElementById('note-text');
-  addNote(input.value);
-  input.value = '';
-});
-document.getElementById('note-text').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') document.getElementById('btn-add-note').click();
-});
-document.getElementById('btn-sync').addEventListener('click', loadState);
-
 document.getElementById('view-btn-dial').addEventListener('click', () => setView('dial'));
 document.getElementById('view-btn-grid').addEventListener('click', () => setView('grid'));
 document.getElementById('grid-prev').addEventListener('click', () => changeBrowsingMonth(-1));
 document.getElementById('grid-next').addEventListener('click', () => changeBrowsingMonth(1));
 
-populateMonthSelect();
 loadState();
-startPolling();
 </script>
 </body>
 </html>
