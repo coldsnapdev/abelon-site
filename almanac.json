@@ -262,7 +262,7 @@
       "year": 21942,
       "month": 3,
       "day": 25,
-      "text": "The party loots the stables, keeps two horses and a cart, and brings Elbeth and the surrendered Sot back to the Amber Cup"
+      "text": "The party loots the stables, keeps the crew's two horses, and brings Elbeth and the surrendered Sot back to the Amber Cup"
     },
     {
       "id": "nmx3e0pjrxkvbo",
@@ -276,7 +276,14 @@
       "year": 21942,
       "month": 3,
       "day": 25,
-      "text": "Danzel persuades Mira to hand over the long-withheld second page of Dohyuk's letter, confirming he's deliberately avoided writing home and is heading further east"
+      "text": "Danzel persuades Mira to hand over the long-withheld second page of Dohyuk's letter, which suggests he has deliberately avoided writing home so his brothers won't come running"
+    },
+    {
+      "id": "nmx3e2vlpfuhbr",
+      "year": 21942,
+      "month": 3,
+      "day": 25,
+      "text": "At the Amber Cup, Mora tells the party the Broken Wing has no hideout and no club, just an idea some people attach themselves to"
     },
     {
       "id": "nmx3e20hnqtgaq",
@@ -286,11 +293,11 @@
       "text": "Rather than set off for Crossroads immediately, the party decides to first detour to the Everbloom Shrine, hoping to understand the ring and box Otho gave them"
     },
     {
-      "id": "nmx3e2vlpfuhbr",
+      "id": "nmz0cart00fix1",
       "year": 21942,
       "month": 3,
       "day": 26,
-      "text": "In Cooper's Square, a well-informed local confirms the Broken Wing has no true organisation or hideout — just an idea some people attach themselves to"
+      "text": "In Cooper's Square, Danzel joins the performer Pen to lift the crowd. The party buys a second-hand cart, finds the horses' saddles at the stables and names the horses Vernon and Mingyu"
     },
     {
       "id": "nmx3e3gysrvjcs",
