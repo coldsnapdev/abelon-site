@@ -2,7 +2,7 @@
   "currentDate": {
     "year": 21942,
     "month": 3,
-    "day": 26
+    "day": 27
   },
   "notes": [
     {
@@ -326,6 +326,62 @@
       "month": 3,
       "day": 26,
       "text": "Uneasy about aiding anything connected to the Broken Wing, but curious what it might reveal, the party agrees to retrieve the ledger from Otho and heads back toward Tallowhaven"
+    },
+    {
+      "id": "nmy4f06ztqrawn",
+      "year": 21942,
+      "month": 3,
+      "day": 26,
+      "text": "Returning to Tallowhaven, the party finds the Threadbare Spine, Otho's magic shop, destroyed by an explosion"
+    },
+    {
+      "id": "nmy4f0r1hbwylx",
+      "year": 21942,
+      "month": 3,
+      "day": 26,
+      "text": "Searching the wreckage, the party finds blood and ransacked cabinets, and traces Otho's young assistant Huw to Sorastra's Rest, Tallowhaven's infirmary"
+    },
+    {
+      "id": "nmy4f1c8qxzvfb",
+      "year": 21942,
+      "month": 3,
+      "day": 26,
+      "text": "Huw reveals he had secretly taken the Shrinekeepers' Ledger himself; confronted over it, Otho attacked him, and the magical backlash brought the shop down. Huw hands over the ledger, Isolde's pigments, and the rod, and Otho is nowhere to be found"
+    },
+    {
+      "id": "nmy4f1xk5dcp9r",
+      "year": 21942,
+      "month": 3,
+      "day": 26,
+      "text": "A further search of the ruins turns up intact potions and spell scrolls, but no further trace of Otho"
+    },
+    {
+      "id": "nmy4f2hqzwjumf",
+      "year": 21942,
+      "month": 3,
+      "day": 27,
+      "text": "Studying the ledger, the party finds its pages torn and no record of their ring or box among the shrine's donations, but spot a donor, Garo Marro, who may be kin to Costin"
+    },
+    {
+      "id": "nmy4f36v8tkysj",
+      "year": 21942,
+      "month": 3,
+      "day": 27,
+      "text": "That evening, Seva and Alric Venn separately invite the party to meet them at seven o'clock, at the Amber Cup and the Shallow Tuber"
+    },
+    {
+      "id": "nmy4f3sxk9vmho",
+      "year": 21942,
+      "month": 3,
+      "day": 27,
+      "text": "Testing the ring and box at the dried Wellspring again finds no trace of Aeron and only the faintest trace of Zareth remaining there"
+    },
+    {
+      "id": "nmy4f4do3cjzwv",
+      "year": 21942,
+      "month": 3,
+      "day": 27,
+      "text": "Preparing to split for their two meetings, the party is confronted at the Coppergate Stables by a zombified Oskar Sternov"
     }
   ]
 }
