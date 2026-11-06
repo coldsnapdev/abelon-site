@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Table — Abelon</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #1a1208; --bg2: #241a0e; --bg3: #2e2010;
+    --ink: #e8d9bc; --ink2: #c4a882; --ink3: #8a7a65;
+    --accent: #c4a882; --gold: #d4a940;
+    --rule: #5a4a38; --rule-faint: rgba(90,74,56,0.4);
+    --card-bg: rgba(36,26,14,0.8); --card-border: rgba(196,168,130,0.2);
+    --teal: #5DCAA5; --pink: #ED93B1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(60,40,15,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(15,10,5,0.8) 0%, transparent 60%);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px; line-height: 1.6; min-height: 100vh; padding: 0 0 4rem;
+  }
+  a { color: var(--ink2); }
+  .page { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  .hero { text-align: center; padding: 3.5rem 1rem 2rem; }
+  .hero-label { font-family: 'Cinzel', serif; font-size: .55em; letter-spacing: .5em; text-transform: uppercase; color: var(--ink3); display: block; margin-bottom: 14px; }
+  .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2em, 7vw, 3em); font-weight: 700; color: var(--accent); letter-spacing: .05em; line-height: 1.1; }
+  .hero-rule { width: 120px; height: .5px; background: var(--rule); margin: 18px auto; }
+  .hero-intro { font-size: .9em; font-style: italic; color: var(--ink2); max-width: 480px; margin: 0 auto; }
+
+  .heading { font-family: 'Cinzel', serif; font-size: .5em; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--ink3); border-bottom: .5px solid var(--rule-faint); padding-bottom: 8px; margin: 2.2rem 0 1rem; }
+
+  .conditions { display: grid; gap: 8px; }
+  .cond { background: var(--card-bg); border: .5px solid var(--card-border); border-radius: 6px; padding: 10px 14px; display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; align-items: baseline; }
+  .cond b { font-family: 'Cinzel', serif; font-size: .62em; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .cond span { font-size: .86em; color: var(--ink2); font-style: italic; }
+  .cond i { font-style: normal; font-family: 'Cinzel', serif; font-size: .6em; letter-spacing: .1em; color: var(--ink3); white-space: nowrap; }
+  .cond.pass i { color: var(--teal); }
+  .cond.fail { border-color: rgba(237,147,177,.35); }
+  .cond.fail i { color: var(--pink); }
+
+  .name-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  input[type=text] { flex: 1 1 220px; background: var(--bg2); border: .5px solid var(--rule); border-radius: 4px; color: var(--ink); font: inherit; padding: 8px 12px; }
+  input[type=text]::placeholder { color: var(--ink3); font-style: italic; }
+  button { font-family: 'Cinzel', serif; font-size: .62em; letter-spacing: .18em; text-transform: uppercase; background: transparent; color: var(--ink2); border: .5px solid var(--rule); border-radius: 4px; padding: 10px 16px; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+  button:hover:not(:disabled) { background: rgba(212,169,64,.08); color: var(--gold); border-color: rgba(212,169,64,.4); }
+  button.primary { color: var(--gold); border-color: rgba(212,169,64,.45); }
+  button:disabled { opacity: .35; cursor: default; }
+
+  .rolls { display: grid; gap: 6px; }
+  .roll { display: flex; align-items: center; gap: 10px; background: var(--card-bg); border: .5px solid var(--card-border); border-radius: 6px; padding: 8px 12px; }
+  .dice { display: flex; gap: 6px; flex: 1; }
+  .die { width: 32px; height: 32px; border-radius: 5px; border: .5px solid var(--rule); background: var(--bg3); display: grid; place-items: center; font-family: 'Cinzel', serif; font-size: .8em; color: var(--ink); }
+  .die.dropped { opacity: .3; text-decoration: line-through; }
+  .total { font-family: 'Cinzel', serif; font-size: 1.35em; font-weight: 700; min-width: 2.2ch; text-align: right; color: var(--accent); }
+  .total.low { color: var(--pink); }
+  .total.high { color: var(--gold); }
+  .sum { text-align: right; font-size: .82em; color: var(--ink3); font-style: italic; margin-top: 6px; }
+
+  .verdict { margin-top: 1.4rem; text-align: center; }
+  .voice { font-style: italic; color: var(--ink2); font-size: 1.02em; margin-bottom: 4px; }
+  .voice .who { font-family: 'Cinzel', serif; font-style: normal; font-size: .58em; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 2px; }
+  .verdict .actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+  .note { font-size: .8em; color: var(--ink3); font-style: italic; margin-top: 10px; }
+  .bear { font-family: 'Cinzel', serif; font-size: 1.05em; letter-spacing: .08em; color: var(--accent); }
+
+  .assign { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .ab { background: var(--card-bg); border: .5px solid var(--card-border); border-radius: 6px; padding: 10px; text-align: center; }
+  .ab label { font-family: 'Cinzel', serif; font-size: .55em; letter-spacing: .2em; color: var(--ink3); display: block; }
+  .ab select { margin-top: 4px; width: 100%; background: var(--bg2); color: var(--ink); border: .5px solid var(--rule); border-radius: 4px; font: inherit; font-family: 'Cinzel', serif; padding: 4px; text-align: center; }
+  .ab .mod { font-size: .78em; color: var(--ink2); margin-top: 2px; min-height: 1.3em; }
+  @media (max-width: 420px) { .assign { grid-template-columns: repeat(2, 1fr); } .cond { grid-template-columns: 1fr auto; } .cond span { grid-column: 1 / -1; grid-row: 2; } }
+
+  .record { white-space: pre-wrap; font-size: .85em; background: var(--bg2); border: .5px solid var(--rule-faint); border-radius: 6px; padding: 10px 14px; color: var(--ink2); }
+  .history { font-size: .8em; color: var(--ink3); }
+  .history li { list-style: none; padding: 3px 0; border-bottom: .5px solid var(--rule-faint); }
+  .hidden { display: none !important; }
+  footer { margin-top: 3rem; padding-top: 1.5rem; border-top: .5px solid var(--rule-faint); text-align: center; font-size: .72em; font-style: italic; color: var(--ink3); }
+  @keyframes settle { from { transform: rotate(-12deg) scale(.85); opacity: .4; } to { transform: none; opacity: 1; } }
+  .die.rolling { animation: settle .45s ease-out; }
+  @media (prefers-reduced-motion: reduce) { .die.rolling { animation: none; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-label">Before Abelon · Before everything</span>
+  <div class="hero-title">The Table</div>
+  <div class="hero-rule"></div>
+  <p class="hero-intro">For each of your aspects you roll four dice and keep three. The smallest falls away. What the dice say, you will be.</p>
+</div>
+
+<div class="page">
+
+  <div class="heading">Tell us who you are</div>
+  <div class="name-row">
+    <input type="text" id="name" placeholder="Your character's name" autocomplete="off">
+    <button class="primary" id="roll">Reveal your power</button>
+  </div>
+
+  <div class="heading">The conditions</div>
+  <div class="conditions">
+    <div class="cond" id="c-essence"><b>Essence</b><span>At least one score above 14.</span><i></i></div>
+    <div class="cond" id="c-instance"><b>Instance</b><span>No more than one score below 8.</span><i></i></div>
+    <div class="cond" id="c-cause"><b>Cause</b><span>The six scores total 65 or more.</span><i></i></div>
+  </div>
+
+  <div id="result" class="hidden">
+    <div class="heading" id="result-heading">Your aspects</div>
+    <div class="rolls" id="rolls"></div>
+    <div class="sum" id="sum"></div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+
+  <div id="allocate" class="hidden">
+    <div class="heading">Place your scores</div>
+    <div class="assign" id="assign"></div>
+    <p class="note">Put each score where you want it. Species bonuses come afterwards, in DiceCloud.</p>
+    <div class="heading">Your record</div>
+    <div class="record" id="record"></div>
+    <div class="verdict"><div class="actions"><button id="copy">Copy for Discord</button></div></div>
+  </div>
+
+  <div id="history-wrap" class="hidden">
+    <div class="heading">Rolled on this device</div>
+    <ul class="history" id="history"></ul>
+  </div>
+
+  <footer>Abelon — The Weight of the World · <a href="index.html">Back to the player site</a></footer>
+</div>
+
+<script>
+(function () {
+  var ABILITIES = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
+  var LINES = {
+    essence: 'This has no distinction. It cannot bear the weight.',
+    instance: 'Too many weaknesses. It cannot bear the weight.',
+    cause: 'The chain cannot sustain this. It cannot bear the weight.'
+  };
+  var KEY = 'abelon.table.v1';
+  var $ = function (id) { return document.getElementById(id); };
+  var state = null; // { name, arrays: [[{dice,kept}...]], accepted: index|null, assign: {} , at }
+
+  function d6() { // unbiased 1-6 from crypto
+    var b = new Uint8Array(1);
+    do { crypto.getRandomValues(b); } while (b[0] >= 252);
+    return (b[0] % 6) + 1;
+  }
+  function rollArray() {
+    var out = [];
+    for (var i = 0; i < 6; i++) {
+      var dice = [d6(), d6(), d6(), d6()];
+      var low = dice.indexOf(Math.min.apply(null, dice));
+      out.push({ dice: dice, drop: low, score: dice.reduce(function (a, b) { return a + b; }, 0) - dice[low] });
+    }
+    return out;
+  }
+  function check(arr) {
+    var s = arr.map(function (r) { return r.score; });
+    var total = s.reduce(function (a, b) { return a + b; }, 0);
+    return {
+      total: total,
+      essence: Math.max.apply(null, s) > 14,
+      instance: s.filter(function (x) { return x < 8; }).length < 2,
+      cause: total >= 65
+    };
+  }
+  function ok(c) { return c.essence && c.instance && c.cause; }
+  function mod(n) { var m = Math.floor((n - 10) / 2); return (m >= 0 ? '+' : '') + m; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function stamp(t) { return new Date(t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || { current: null, history: [] }; } catch (e) { return { current: null, history: [] }; } }
+  function save(store) { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+  var store = load();
+
+  function current() { return state.arrays[state.arrays.length - 1]; }
+
+  function renderConditions(c) {
+    ['essence', 'instance', 'cause'].forEach(function (k) {
+      var el = $('c-' + k);
+      el.className = 'cond' + (c ? (c[k] ? ' pass' : ' fail') : '');
+      el.querySelector('i').textContent = c ? (c[k] ? 'bears the weight' : 'cannot bear it') : '';
+    });
+  }
+
+  function renderRolls(animate) {
+    var arr = current(), c = check(arr);
+    $('result').classList.remove('hidden');
+    $('result-heading').textContent = state.arrays.length > 1 ? 'Your aspects, second casting' : 'Your aspects';
+    $('rolls').innerHTML = arr.map(function (r) {
+      return '<div class="roll"><div class="dice">' + r.dice.map(function (d, i) {
+        return '<span class="die' + (i === r.drop ? ' dropped' : '') + (animate ? ' rolling' : '') + '" style="animation-delay:' + (i * 40) + 'ms">' + d + '</span>';
+      }).join('') + '</div><span class="total' + (r.score < 8 ? ' low' : r.score > 14 ? ' high' : '') + '">' + r.score + '</span></div>';
+    }).join('');
+    $('sum').textContent = 'Total ' + c.total;
+    renderConditions(c);
+
+    var v = '';
+    var name = state.name || 'You';
+    if (state.accepted !== null) {
+      v = '<p class="bear">' + esc(name) + '.</p>';
+    } else if (ok(c)) {
+      v = '<p class="bear">' + esc(name) + '. You shall bear the weight.</p><div class="actions"><button class="primary" id="accept">Place my scores</button></div>';
+    } else {
+      v = ['essence', 'instance', 'cause'].filter(function (k) { return !c[k]; }).map(function (k) {
+        return '<p class="voice"><span class="who">' + k + '</span>“' + LINES[k] + '”</p>';
+      }).join('');
+      if (state.arrays.length === 1) {
+        v += '<div class="actions"><button class="primary" id="reroll">Roll again</button><button id="accept">Keep these</button></div>' +
+             '<p class="note">You may roll once more. Whatever the second casting gives, you keep. Or keep these, if you would rather.</p>';
+      } else {
+        v += '<div class="actions"><button class="primary" id="accept">Place my scores</button></div>' +
+             '<p class="note">The second casting stands. The primordials do not offer a third chance.</p>';
+      }
+    }
+    $('verdict').innerHTML = v;
+    if ($('reroll')) $('reroll').onclick = function () { state.arrays.push(rollArray()); persist(); renderRolls(true); };
+    lock();
+    if ($('accept')) $('accept').onclick = function () { state.accepted = state.arrays.length - 1; persist(); renderRolls(false); renderAllocate(); };
+  }
+
+  function renderAllocate() {
+    $('allocate').classList.remove('hidden');
+    var scores = current().map(function (r) { return r.score; });
+    var used = {}; // index into scores -> ability
+    ABILITIES.forEach(function (a) { if (state.assign[a] != null) used[state.assign[a]] = a; });
+    $('assign').innerHTML = ABILITIES.map(function (a) {
+      var mine = state.assign[a];
+      var opts = '<option value="">—</option>' + scores.map(function (s, i) {
+        if (used[i] && used[i] !== a) return '';
+        return '<option value="' + i + '"' + (mine === i ? ' selected' : '') + '>' + s + '</option>';
+      }).join('');
+      return '<div class="ab"><label>' + a + '</label><select data-a="' + a + '">' + opts + '</select><div class="mod">' + (mine != null ? mod(scores[mine]) : '') + '</div></div>';
+    }).join('');
+    $('assign').querySelectorAll('select').forEach(function (sel) {
+      sel.onchange = function () { var v = sel.value; if (v === '') delete state.assign[sel.dataset.a]; else state.assign[sel.dataset.a] = +v; persist(); renderAllocate(); };
+    });
+    $('record').textContent = recordText();
+    lock();
+  }
+
+  // mid-casting, the Table can't be left; once scores are placed, a new character can begin
+  function lock() {
+    var busy = state && state.accepted === null;
+    $('roll').disabled = busy; $('name').disabled = busy;
+    if (state && state.accepted !== null && $('roll').textContent !== 'A new character') { $('roll').textContent = 'A new character'; $('name').value = ''; }
+  }
+
+  function recordText() {
+    var lines = [(state.name || 'Unnamed') + ' at the Table, ' + stamp(state.at)];
+    state.arrays.forEach(function (arr, i) {
+      var c = check(arr), s = arr.map(function (r) { return r.score; });
+      lines.push((i === 0 ? 'First casting: ' : 'Second casting: ') + s.join(', ') + ' (total ' + c.total + ')' + (ok(c) ? '' : ' — refused by ' + ['essence', 'instance', 'cause'].filter(function (k) { return !c[k]; }).map(function (k) { return k[0].toUpperCase() + k.slice(1); }).join(', ')));
+    });
+    var scores = current().map(function (r) { return r.score; });
+    var placed = ABILITIES.map(function (a) { return state.assign[a] != null ? a + ' ' + scores[state.assign[a]] : null; }).filter(Boolean);
+    lines.push(placed.length ? placed.join(' · ') : 'Kept: ' + scores.slice().sort(function (a, b) { return b - a; }).join(', '));
+    return lines.join('\n');
+  }
+
+  function persist() { store.current = state; save(store); }
+
+  function renderHistory() {
+    var h = store.history.slice(-8).reverse();
+    $('history-wrap').classList.toggle('hidden', !h.length);
+    $('history').innerHTML = h.map(function (e) {
+      return '<li>' + esc(e.name || 'Unnamed') + ' · ' + stamp(e.at) + ' · ' + e.arrays.map(function (arr) { return arr.map(function (r) { return r.score; }).join(' '); }).join(' → ') + '</li>';
+    }).join('');
+  }
+
+  $('roll').onclick = function () {
+    if (state) { store.history.push(state); } // a fresh character: keep the last one on record
+    state = { name: $('name').value.trim(), arrays: [rollArray()], accepted: null, assign: {}, at: Date.now() };
+    $('allocate').classList.add('hidden'); $('roll').textContent = 'Reveal your power';
+    persist(); renderHistory(); renderRolls(true);
+  };
+  $('copy').onclick = function () {
+    var t = recordText();
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+      $('copy').textContent = 'Copied'; setTimeout(function () { $('copy').textContent = 'Copy for Discord'; }, 1500);
+    }, function () { $('copy').textContent = 'Select the text above'; });
+  };
+
+  // a casting survives a refresh; it stays on this device's record
+  if (store.current) {
+    state = store.current;
+    $('name').value = state.name || '';
+    renderRolls(false);
+    if (state.accepted !== null) renderAllocate();
+  }
+  renderHistory();
+})();
+</script>
+</body>
+</html>
